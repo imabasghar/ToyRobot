@@ -17,10 +17,10 @@ export function reducer(state = initialState, action: robot.Actions): State {
   switch (action.type) {
     case robot.PLACE: {
       const newPosition: Position = action.payload as Position;
-      return {
+      return Object.assign({}, state, {
         position: newPosition,
         isRobotPlaced: true
-      };
+      });
     }
 
     case robot.LEFT: {

@@ -14,7 +14,7 @@ import { reducer } from './reducers/robot';
   imports: [
     BrowserModule,
     FormsModule,
-    StoreModule.forRoot(reducer)
+    StoreModule.forRoot({robot: reducer})
   ],
   providers: [],
   bootstrap: [AppComponent]
