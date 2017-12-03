@@ -6,7 +6,7 @@ export class Parser {
   static parseCommand(command: string): robot.Actions | boolean | string {
     try {
       const parts = command.split(' ');
-      // If any command (except for place) has more or less than 1 word
+      // If any command (except for PLACE) has more or less than 1 word
       if (parts[0] !== 'PLACE' && parts.length !== 1) {
         return false;
       }
