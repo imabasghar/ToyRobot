@@ -17,10 +17,14 @@ export function reducer(state = initialState, action: robot.Actions): State {
   switch (action.type) {
     case robot.PLACE: {
       const newPosition: Position = action.payload as Position;
-      return Object.assign({}, state, {
-        position: newPosition,
-        isRobotPlaced: true
-      });
+      if (isValidPosition(newPosition)) {
+        return Object.assign({}, state, {
+          position: newPosition,
+          isRobotPlaced: true
+        });
+      } else {
+        return state;
+      }
     }
 
     case robot.LEFT: {
@@ -32,9 +36,13 @@ export function reducer(state = initialState, action: robot.Actions): State {
       }
       const newPosition = Object.assign({}, state.position);
       newPosition.direction = direction;
-      return Object.assign ({}, state, {
-        position: newPosition
-      });
+      if (isValidPosition(newPosition)) {
+        return Object.assign({}, state, {
+          position: newPosition
+        });
+      } else {
+        return state;
+      }
     }
 
     case robot.RIGHT: {
@@ -46,9 +54,13 @@ export function reducer(state = initialState, action: robot.Actions): State {
       }
       const newPosition = Object.assign({}, state.position);
       newPosition.direction = direction;
-      return Object.assign ({}, state, {
-        position: newPosition
-      });
+      if (isValidPosition(newPosition)) {
+        return Object.assign({}, state, {
+          position: newPosition
+        });
+      } else {
+        return state;
+      }
     }
 
     case robot.MOVE: {
@@ -67,13 +79,29 @@ export function reducer(state = initialState, action: robot.Actions): State {
           newPosition.x--;
           break;
       }
-      return Object.assign ({}, state, {
-        position: newPosition
-      });
+      if (isValidPosition(newPosition)) {
+        return Object.assign({}, state, {
+          position: newPosition
+        });
+      } else {
+        return state;
+      }
     }
 
     default: {
       return state;
     }
   }
+}
+
+const MAX_COLS = 5;
+const MAX_ROWS = 5;
+
+function isValidPosition(position: Position) {
+  return (
+    position.x >= 0 &&
+    position.x < MAX_COLS &&
+    position.y >= 0 &&
+    position.y < MAX_ROWS
+  );
 }
