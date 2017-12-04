@@ -17,14 +17,7 @@ export function reducer(state = initialState, action: robot.Actions): State {
   switch (action.type) {
     case robot.PLACE: {
       const newPosition: Position = action.payload as Position;
-      if (isValidPosition(newPosition)) {
-        return Object.assign({}, state, {
-          position: newPosition,
-          isRobotPlaced: true
-        });
-      } else {
-        return state;
-      }
+      return nextState(state, newPosition, true);
     }
 
     case robot.LEFT: {
@@ -36,13 +29,7 @@ export function reducer(state = initialState, action: robot.Actions): State {
       }
       const newPosition = Object.assign({}, state.position);
       newPosition.direction = direction;
-      if (isValidPosition(newPosition)) {
-        return Object.assign({}, state, {
-          position: newPosition
-        });
-      } else {
-        return state;
-      }
+      return nextState(state, newPosition, state.isRobotPlaced);
     }
 
     case robot.RIGHT: {
@@ -54,13 +41,7 @@ export function reducer(state = initialState, action: robot.Actions): State {
       }
       const newPosition = Object.assign({}, state.position);
       newPosition.direction = direction;
-      if (isValidPosition(newPosition)) {
-        return Object.assign({}, state, {
-          position: newPosition
-        });
-      } else {
-        return state;
-      }
+      return nextState(state, newPosition, state.isRobotPlaced);
     }
 
     case robot.MOVE: {
@@ -79,13 +60,7 @@ export function reducer(state = initialState, action: robot.Actions): State {
           newPosition.x--;
           break;
       }
-      if (isValidPosition(newPosition)) {
-        return Object.assign({}, state, {
-          position: newPosition
-        });
-      } else {
-        return state;
-      }
+      return nextState(state, newPosition, state.isRobotPlaced);
     }
 
     default: {
@@ -104,4 +79,15 @@ function isValidPosition(position: Position) {
     position.y >= 0 &&
     position.y < MAX_ROWS
   );
+}
+
+function nextState(state, newPosition: Position, isRobotPlaced) {
+  if (isValidPosition(newPosition)) {
+    return Object.assign({}, state, {
+      position: newPosition,
+      isRobotPlaced: isRobotPlaced
+    });
+  } else {
+    return state;
+  }
 }
